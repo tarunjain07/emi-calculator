@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./index.css";
 
 export default function EMICalculator() {
   const [amount, setAmount] = useState<number>(0);
@@ -45,56 +46,67 @@ export default function EMICalculator() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 space-y-4">
-      <div className="bg-white shadow-lg rounded-xl p-6">
-        <h2 className="text-2xl font-bold mb-4">EMI Calculator</h2>
+    <div className="main-container">
+      <div className="card">
+        <h2 className="title">EMI Calculator</h2>
 
-        <div className="space-y-2">
-          <label className="block font-semibold">Purchase Amount</label>
-          <input type="number" value={amount} onChange={e => setAmount(Number(e.target.value))} className="w-full border p-2 rounded" />
-
-          <label className="block font-semibold">Tenure (Months)</label>
-          <input type="number" value={tenure} onChange={e => setTenure(Number(e.target.value))} className="w-full border p-2 rounded" />
-
-          <label className="block font-semibold">Interest Rate (%) per annum</label>
-          <input type="number" value={interestRate} onChange={e => setInterestRate(Number(e.target.value))} className="w-full border p-2 rounded" />
-
-          <label className="block font-semibold">Processing Fee ({isProcessingFeePercent ? "%" : "₹"})</label>
-          <input type="number" value={processingFee} onChange={e => setProcessingFee(Number(e.target.value))} className="w-full border p-2 rounded" />
-          <div className="text-sm text-blue-600 cursor-pointer" onClick={() => setIsProcessingFeePercent(!isProcessingFeePercent)}>
-            Toggle to {isProcessingFeePercent ? "Absolute" : "Percentage"}
-          </div>
-
-          <label className="block font-semibold mt-4">Use Common Tax Rate for Both</label>
-          <input type="checkbox" checked={useCommonTaxRate} onChange={e => setUseCommonTaxRate(e.target.checked)} className="ml-2" />
-
-          {useCommonTaxRate ? (
-            <div>
-              <label className="block font-semibold mt-2">Common Tax Rate (%)</label>
-              <input type="number" value={commonTaxRate} onChange={e => setCommonTaxRate(Number(e.target.value))} className="w-full border p-2 rounded" />
-            </div>
-          ) : (
-            <>
-              <label className="block font-semibold mt-2">Tax Rate on Interest (%)</label>
-              <input type="number" value={interestTaxRate} onChange={e => setInterestTaxRate(Number(e.target.value))} className="w-full border p-2 rounded" />
-
-              <label className="block font-semibold mt-2">Tax Rate on Processing Fee (%)</label>
-              <input type="number" value={processingTaxRate} onChange={e => setProcessingTaxRate(Number(e.target.value))} className="w-full border p-2 rounded" />
-            </>
-          )}
-
-          <button onClick={calculate} className="bg-blue-600 text-white w-full py-2 rounded mt-4 hover:bg-blue-700 transition-all">Calculate</button>
+        <div className="form-group">
+          <label>Purchase Amount</label>
+          <input type="number" value={amount} onChange={e => setAmount(Number(e.target.value))} />
         </div>
 
+        <div className="form-group">
+          <label>Tenure (Months)</label>
+          <input type="number" value={tenure} onChange={e => setTenure(Number(e.target.value))} />
+        </div>
+
+        <div className="form-group">
+          <label>Interest Rate (%) per annum</label>
+          <input type="number" value={interestRate} onChange={e => setInterestRate(Number(e.target.value))} />
+        </div>
+
+        <div className="form-group">
+          <label>Processing Fee ({isProcessingFeePercent ? "%" : "₹"})</label>
+          <input type="number" value={processingFee} onChange={e => setProcessingFee(Number(e.target.value))} />
+          <div className="toggle-link" onClick={() => setIsProcessingFeePercent(!isProcessingFeePercent)}>
+            Toggle to {isProcessingFeePercent ? "Absolute" : "Percentage"}
+          </div>
+        </div>
+
+        <div className="checkbox">
+          <input type="checkbox" checked={useCommonTaxRate} onChange={e => setUseCommonTaxRate(e.target.checked)} />
+          <label>Use Common Tax Rate for Both</label>
+        </div>
+
+        {useCommonTaxRate ? (
+          <div className="form-group">
+            <label>Common Tax Rate (%)</label>
+            <input type="number" value={commonTaxRate} onChange={e => setCommonTaxRate(Number(e.target.value))} />
+          </div>
+        ) : (
+          <>
+            <div className="form-group">
+              <label>Tax Rate on Interest (%)</label>
+              <input type="number" value={interestTaxRate} onChange={e => setInterestTaxRate(Number(e.target.value))} />
+            </div>
+            <div className="form-group">
+              <label>Tax Rate on Processing Fee (%)</label>
+              <input type="number" value={processingTaxRate} onChange={e => setProcessingTaxRate(Number(e.target.value))} />
+            </div>
+          </>
+        )}
+
+        <button onClick={calculate}>Calculate</button>
+
         {result && (
-          <div className="space-y-2 mt-6 text-sm">
+          <div className="result-box">
             <div><strong>Monthly EMI:</strong> ₹{result.emi}</div>
             <div><strong>Total Interest:</strong> ₹{result.totalInterest}</div>
             <div><strong>Tax on Interest:</strong> ₹{result.interestTax}</div>
             <div><strong>Processing Fee:</strong> ₹{result.processingFee}</div>
             <div><strong>Processing Fee Tax:</strong> ₹{result.processingFeeTax}</div>
             <div><strong>Total Processing Fee (incl. tax):</strong> ₹{result.totalProcessing}</div>
-            <div><strong>Total Amount Paid:</strong> ₹{result.totalPaid}</div>
+            <div className="highlight"><strong>Total Amount Paid:</strong> ₹{result.totalPaid}</div>
           </div>
         )}
       </div>
